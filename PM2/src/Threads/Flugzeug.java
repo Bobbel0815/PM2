@@ -27,8 +27,6 @@ public class Flugzeug extends Thread{
 	public enum Status {
 		IM_FLUG, IM_LANDEANFLUG, GELANDET
 	}
-	
-	
 	Status status;
 
 	public Flugzeug(String id, int fludauer, Flughafen flughafen, int startZeit) {
@@ -37,7 +35,10 @@ public class Flugzeug extends Thread{
 		this.flughafen = flughafen;
 		status = Status.IM_FLUG;
 	}
-
+	/**
+	 * Fragt ab, ob ein FLugzeug gelandet ist.
+	 * @return
+	 */
 	public boolean istGelandet() {
 		if (status == Status.GELANDET) {
 			return true;
@@ -60,14 +61,16 @@ public class Flugzeug extends Thread{
 	public Status getStatus() {
 		return status;
 	}
-
+/**
+ * Hauptmethode des Threads. Leasst einen Flugzeug Thread, solange seine Flugdauer > 0 , f+r 250ms schlafen.
+ * Wenn die Flugdauer = 0 ist , wird die Landen Methode aufgerufen.
+ */
 	public void run() {
 		while (flugdauer > 0) {
 			while(flugdauer>0){
 				try {
 	 				sleep(250);
 	 			} catch (InterruptedException e) {
-	 				// TODO Auto-generated catch block
 	 				e.printStackTrace();
 	 			}
 	 		}
@@ -76,7 +79,6 @@ public class Flugzeug extends Thread{
 	}
 	}
 	public int getStartZeit() {
-		// TODO Auto-generated method stub
 		return startZeit;
 	}
 
