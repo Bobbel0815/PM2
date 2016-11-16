@@ -39,13 +39,14 @@ public class GUI extends Application implements Observer {
 	public void start(Stage primaryStage) throws Exception {
 		int rectangleHeight = 480 / anzahlGleise;
 		Rectangle rectangle;
+		root = new VBox();
 		for (int i = 0; i < anzahlGleise; i++) {
 			rectangle = new Rectangle(0, i * rectangleHeight + i, 120, rectangleHeight);
 			rectangle.setFill(Color.GREEN);
 			rectangle.setStroke(Color.BLACK);
 			root.getChildren().add(rectangle);
 		}
-		((Shape) root.getChildren().get(2)).setFill(Color.GREEN);
+		primaryStage.setTitle("Simulation");
 		primaryStage.setScene(new Scene(root, 120, 480));
 		primaryStage.show();
 
@@ -53,8 +54,6 @@ public class GUI extends Application implements Observer {
 		bahnhof.addObserver(this);
 		Thread simulation = new Thread(new Simulation(bahnhof));
 		simulation.start();
-		primaryStage.setTitle("Simulation");
-		root = new VBox();
 
 	}
 

@@ -9,7 +9,7 @@ public class Lokfuehrer extends Thread {
 	/**
 	 * 
 	 */
-	private Rangierbahnhof bahnhof;bahnhof
+	private Rangierbahnhof bahnhof;
 
 	public Lokfuehrer(int aufgabe, Rangierbahnhof bahnhof) {
 		this.aufgabe = aufgabe;
@@ -17,7 +17,7 @@ public class Lokfuehrer extends Thread {
 	}
 
 	/**
-	 * Die Hauptmethode des threads. Wenn eine 0 mitgegeben wird, fährt ein Zug
+	 * Die Hauptmethode des threads. Wenn eine 0 mitgegeben wird, fï¿½hrt ein Zug
 	 * ein, bei 1 aus
 	 */
 	public void run() {
