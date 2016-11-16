@@ -3,17 +3,32 @@ package Threads;
 import Threads.Flugzeug.Status;
 
 public class Flugzeug extends Thread{
-
+	/**
+	 * ID des Flugzeuges
+	 */
 	private String id;
+	/**
+	 * Flugdauer eines FLugzeuges.
+	 */
 	private int flugdauer;
+	/**
+	 * Flughafen auf dem gestartet und gelandet wird.
+	 */
 	private Flughafen flughafen;
+	/**
+	 * Startzeit eines Flugzeuges.
+	 */
 	private int startZeit;
-
+	/**
+	 * Status eines Flugzeuges in Form eines Enums.
+	 * @author Dennis
+	 *
+	 */
 	public enum Status {
 		IM_FLUG, IM_LANDEANFLUG, GELANDET
 	}
-
-	private int zeit;
+	
+	
 	Status status;
 
 	public Flugzeug(String id, int fludauer, Flughafen flughafen, int startZeit) {

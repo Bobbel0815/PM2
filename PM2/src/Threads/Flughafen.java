@@ -6,9 +6,18 @@ import java.util.Random;
 
 import Threads.Flugzeug.Status;
 
-public class Flughafen extends Thread{
+public class Flughafen extends Thread {
+	/**
+	 * Zeitschritt der pro run() Auruf, erhoet wird.
+	 */
 	int zeit;
+	/**
+	 * Anzahl von Flugzeugen in der Liste.
+	 */
 	int anzahlFlugzeuge;
+	/**
+	 * Liste vom Typ Flugzeug.
+	 */
 	List<Flugzeug> flugzeuge;
 
 	public Flughafen(int anzahlFlugzeuge) {
@@ -18,30 +27,31 @@ public class Flughafen extends Thread{
 		erzeugeFlugzeug(this, anzahlFlugzeuge);
 	}
 
+	/**
+	 * Hauptmethode des Thread. Gibt alle 500ms alle Stati der Fluzeuge aus.
+	 * Aktualisiert die Flugdauer und die Zeit.
+	 */
 	public void run() {
 		zeit = 1;
 		while (true) {
 			System.out.println("\nZeit: " + zeit);
-			
-			if(flugzeuge.size() < anzahlFlugzeuge){
+
+			if (flugzeuge.size() < anzahlFlugzeuge) {
 				erzeugeFlugzeug(this, 1);
 			}
 			for (int i = 0; i < flugzeuge.size(); i++) {
 				Flugzeug flugzeug = flugzeuge.get(i);
 				int flugdauer = flugzeug.getFlugdauer();
 				int startZeit = flugzeug.getStartZeit();
-				
-		
-				if(!flugzeuge.get(i).istGelandet()){
-					if(flugdauer > 0 ){
-					flugzeug.setFlugdauer(flugdauer-1);
+
+				if (!flugzeuge.get(i).istGelandet()) {
+					if (flugdauer > 0) {
+						flugzeug.setFlugdauer(flugdauer - 1);
 					}
-				
-				
-				
-				
-				System.out.println(flugzeuge.get(i).toString());
-				}try {
+
+					System.out.println(flugzeuge.get(i).toString());
+				}
+				try {
 					Thread.sleep(500);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
@@ -50,9 +60,15 @@ public class Flughafen extends Thread{
 			}
 			zeit++;
 		}
-	
+
 	}
 
+	/**
+	 * Synchornisierte Methode, die alle 1500ms ein FLugzeug mit der Flugdauer
+	 * 0, landen laesst. Und es dann aus der Liste entfernt.
+	 * 
+	 * @param flugzeug
+	 */
 	public synchronized void landen(Flugzeug flugzeug) {
 		flugzeug.setStatus(Status.IM_LANDEANFLUG);
 		try {
@@ -64,15 +80,19 @@ public class Flughafen extends Thread{
 		flugzeug.setStatus(Status.GELANDET);
 		System.out.println("->Flugzeug gelandet: " + flugzeug.toString());
 		flugzeuge.remove(flugzeug);
-			
-			//System.out.println("anzahlflugzeuge: "+anzahlFlugzeuge+ "listengröße: "+ flugzeuge.size());
-			
-			
-		
-		
-		
+
+		// System.out.println("anzahlflugzeuge: "+anzahlFlugzeuge+ "listengröße:
+		// "+ flugzeuge.size());
+
 	}
 
+	/**
+	 * Erzeugt mit Hilfe von vordefinierten Fluglinien und einer randomisierten
+	 * Kennung, die ID eines Flugzeuges, eine zufaellig Flugdauer, erstellt dieses und fuegt es der Liste zu.
+	 * Startet jeden Flugzeug Thread. 
+	 * @param flughafen
+	 * @param flugzeugZahl
+	 */
 	public void erzeugeFlugzeug(Flughafen flughafen, int flugzeugZahl) {
 		Random random = new Random();
 
@@ -82,7 +102,7 @@ public class Flughafen extends Thread{
 			int flugdauer = 0;
 			String id = "";
 			int kennung;
-			
+
 			switch (randomAirline) {
 			case 1:
 				id = "Lufthansa";
@@ -105,15 +125,14 @@ public class Flughafen extends Thread{
 			}
 			kennung = random.nextInt(8999) + 1000;
 
-			
-
 			flugdauer = random.nextInt(10) + 1;
 			id += " " + kennung;
 			Flugzeug flugzeug = new Flugzeug(id, flugdauer, this, zeit);
 			flugzeug.start();
-			System.out.println("->Neues Flugzeug erzeugt: Flugzeug "+id+" ("+flugzeug.getStatus()+", Zeit bis Ziel: "+flugdauer+")");
+			System.out.println("->Neues Flugzeug erzeugt: Flugzeug " + id + " (" + flugzeug.getStatus()
+					+ ", Zeit bis Ziel: " + flugdauer + ")");
 			flugzeuge.add(flugzeug);
-			
+
 		}
 
 	}
@@ -121,10 +140,6 @@ public class Flughafen extends Thread{
 	public static void main(String[] args) {
 		Flughafen flughafen = new Flughafen(10);
 		flughafen.start();
-		
-		
-		
-	
 
 	}
 }
