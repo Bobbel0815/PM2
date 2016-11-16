@@ -1,6 +1,8 @@
 package Threads;
 
-public class Flugzeug {
+import Threads.Flugzeug.Status;
+
+public class Flugzeug extends Thread{
 
 	private String id;
 	private int flugdauer;
@@ -45,8 +47,19 @@ public class Flugzeug {
 	}
 
 	public void run() {
+		while (flugdauer > 0) {
+			while(flugdauer>0){
+				try {
+	 				sleep(250);
+	 			} catch (InterruptedException e) {
+	 				// TODO Auto-generated catch block
+	 				e.printStackTrace();
+	 			}
+	 		}
+	 		flughafen.landen(this);
+	 		
 	}
-
+	}
 	public int getStartZeit() {
 		// TODO Auto-generated method stub
 		return startZeit;

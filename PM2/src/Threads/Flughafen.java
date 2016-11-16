@@ -6,7 +6,7 @@ import java.util.Random;
 
 import Threads.Flugzeug.Status;
 
-public class Flughafen {
+public class Flughafen extends Thread{
 	int zeit;
 	int anzahlFlugzeuge;
 	List<Flugzeug> flugzeuge;
@@ -21,37 +21,40 @@ public class Flughafen {
 	public void run() {
 		zeit = 1;
 		while (true) {
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			System.out.println("\nZeit: " + zeit);
+			
+			if(flugzeuge.size() < anzahlFlugzeuge){
+				erzeugeFlugzeug(this, 1);
 			}
 			for (int i = 0; i < flugzeuge.size(); i++) {
 				Flugzeug flugzeug = flugzeuge.get(i);
 				int flugdauer = flugzeug.getFlugdauer();
 				int startZeit = flugzeug.getStartZeit();
 				
-				if (flugdauer == 0) {
-					flugzeug.setStatus(Status.IM_LANDEANFLUG);
-					this.landen(flugzeug);
-				}
-				
-				if(flugzeug.status == Status.IM_FLUG){
+		
+				if(!flugzeuge.get(i).istGelandet()){
+					if(flugdauer > 0 ){
 					flugzeug.setFlugdauer(flugdauer-1);
-				}
+					}
 				
 				
-				zeit++;
+				
+				
 				System.out.println(flugzeuge.get(i).toString());
+				}try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-			
+			zeit++;
 		}
 	
 	}
 
 	public synchronized void landen(Flugzeug flugzeug) {
-
+		flugzeug.setStatus(Status.IM_LANDEANFLUG);
 		try {
 			Thread.sleep(1500);
 		} catch (InterruptedException e) {
@@ -60,21 +63,20 @@ public class Flughafen {
 		}
 		flugzeug.setStatus(Status.GELANDET);
 		System.out.println("->Flugzeug gelandet: " + flugzeug.toString());
-		int index = flugzeuge.indexOf(flugzeug);
+		flugzeuge.remove(flugzeug);
+			
+			//System.out.println("anzahlflugzeuge: "+anzahlFlugzeuge+ "listengröße: "+ flugzeuge.size());
+			
+			
 		
-		
-		for(int i = flugzeuge.indexOf(flugzeug)+1; i < anzahlFlugzeuge;i++){
-			flugzeuge.set((flugzeuge.indexOf(i)-1),flugzeuge.get(i));
-		
-		}
 		
 		
 	}
 
-	public void erzeugeFlugzeug(Flughafen flughafen, int anzahlFlugzeuge) {
+	public void erzeugeFlugzeug(Flughafen flughafen, int flugzeugZahl) {
 		Random random = new Random();
 
-		for (int i = 0; i < anzahlFlugzeuge; i++) {
+		for (int i = 0; i < flugzeugZahl; i++) {
 
 			int randomAirline = random.nextInt(6) + 1;
 			int flugdauer = 0;
@@ -108,7 +110,7 @@ public class Flughafen {
 			flugdauer = random.nextInt(10) + 1;
 			id += " " + kennung;
 			Flugzeug flugzeug = new Flugzeug(id, flugdauer, this, zeit);
-			
+			flugzeug.start();
 			System.out.println("->Neues Flugzeug erzeugt: Flugzeug "+id+" ("+flugzeug.getStatus()+", Zeit bis Ziel: "+flugdauer+")");
 			flugzeuge.add(flugzeug);
 			
@@ -117,8 +119,11 @@ public class Flughafen {
 	}
 
 	public static void main(String[] args) {
-		Flughafen flughafen = new Flughafen(3);
-		flughafen.run();
+		Flughafen flughafen = new Flughafen(10);
+		flughafen.start();
+		
+		
+		
 	
 
 	}

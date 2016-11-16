@@ -1,10 +1,5 @@
 package aufgabenblatt3;
 
-public class Zug implements Runnable {
+public class Zug {
 
-	
-
-	public void run() {
-	
-	}
 }
