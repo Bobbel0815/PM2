@@ -5,10 +5,23 @@ import java.util.List;
 import java.util.Random;
 
 import Threads.Flugzeug.Status;
-
-public class Flughafen {
+/**
+ * Diese Klasse repraesentiert einen Flughafen mit einer Landebahn.
+ * @author acc378
+ *
+ */
+public class Flughafen extends Thread {
+	/**
+	 * Zeitschritt der pro run() Auruf, erhoet wird.
+	 */
 	int zeit;
+	/**
+	 * Anzahl von Flugzeugen in der Liste.
+	 */
 	int anzahlFlugzeuge;
+	/**
+	 * Liste vom Typ Flugzeug.
+	 */
 	List<Flugzeug> flugzeuge;
 
 	public Flughafen(int anzahlFlugzeuge) {
@@ -18,40 +31,47 @@ public class Flughafen {
 		erzeugeFlugzeug(this, anzahlFlugzeuge);
 	}
 
+	/**
+	 * Hauptmethode des Thread. Gibt alle 500ms alle Stati der Fluzeuge aus.
+	 * Aktualisiert die Flugdauer und die Zeit.
+	 */
 	public void run() {
 		zeit = 1;
 		while (true) {
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			System.out.println("\nZeit: " + zeit);
+
+			if (flugzeuge.size() < anzahlFlugzeuge) {
+				erzeugeFlugzeug(this, 1);
 			}
 			for (int i = 0; i < flugzeuge.size(); i++) {
 				Flugzeug flugzeug = flugzeuge.get(i);
-				int flugdauer = flugzeug.getFlugdauer();
-				int startZeit = flugzeug.getStartZeit();
 				
-				if (flugdauer == 0) {
-					flugzeug.setStatus(Status.IM_LANDEANFLUG);
-					this.landen(flugzeug);
+						flugzeug.setFlugdauer();
+					
+
+					System.out.println(flugzeuge.get(i).toString());
 				}
-				
-				if(flugzeug.status == Status.IM_FLUG){
-					flugzeug.setFlugdauer(flugdauer-1);
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-				
-				
-				zeit++;
-				System.out.println(flugzeuge.get(i).toString());
-			}
 			
+			zeit++;
 		}
+}
+
 	
-	}
 
+	/**
+	 * Synchornisierte Methode, die alle 1500ms ein FLugzeug mit der Flugdauer
+	 * 0, landen laesst. Und es dann aus der Liste entfernt.
+	 * 
+	 * @param flugzeug
+	 */
 	public synchronized void landen(Flugzeug flugzeug) {
-
+		flugzeug.setStatus(Status.IM_LANDEANFLUG);
 		try {
 			Thread.sleep(1500);
 		} catch (InterruptedException e) {
@@ -60,27 +80,30 @@ public class Flughafen {
 		}
 		flugzeug.setStatus(Status.GELANDET);
 		System.out.println("->Flugzeug gelandet: " + flugzeug.toString());
-		int index = flugzeuge.indexOf(flugzeug);
-		
-		
-		for(int i = flugzeuge.indexOf(flugzeug)+1; i < anzahlFlugzeuge;i++){
-			flugzeuge.set((flugzeuge.indexOf(i)-1),flugzeuge.get(i));
-		
-		}
-		
-		
+		flugzeuge.remove(flugzeug);
+
+		// System.out.println("anzahlflugzeuge: "+anzahlFlugzeuge+ "listengröße:
+		// "+ flugzeuge.size());
+
 	}
 
-	public void erzeugeFlugzeug(Flughafen flughafen, int anzahlFlugzeuge) {
+	/**
+	 * Erzeugt mit Hilfe von vordefinierten Fluglinien und einer randomisierten
+	 * Kennung, die ID eines Flugzeuges, eine zufaellig Flugdauer, erstellt dieses und fuegt es der Liste zu.
+	 * Startet jeden Flugzeug Thread. 
+	 * @param flughafen
+	 * @param flugzeugZahl
+	 */
+	public void erzeugeFlugzeug(Flughafen flughafen, int flugzeugZahl) {
 		Random random = new Random();
 
-		for (int i = 0; i < anzahlFlugzeuge; i++) {
+		for (int i = 0; i < flugzeugZahl; i++) {
 
 			int randomAirline = random.nextInt(6) + 1;
 			int flugdauer = 0;
 			String id = "";
 			int kennung;
-			
+
 			switch (randomAirline) {
 			case 1:
 				id = "Lufthansa";
@@ -103,23 +126,21 @@ public class Flughafen {
 			}
 			kennung = random.nextInt(8999) + 1000;
 
-			
-
-			flugdauer = random.nextInt(10) + 1;
+			flugdauer = random.nextInt(100) + 1;
 			id += " " + kennung;
 			Flugzeug flugzeug = new Flugzeug(id, flugdauer, this, zeit);
-			
-			System.out.println("->Neues Flugzeug erzeugt: Flugzeug "+id+" ("+flugzeug.getStatus()+", Zeit bis Ziel: "+flugdauer+")");
+			flugzeug.start();
+			System.out.println("->Neues Flugzeug erzeugt: Flugzeug " + id + " (" + flugzeug.getStatus()
+					+ ", Zeit bis Ziel: " + flugdauer + ")");
 			flugzeuge.add(flugzeug);
-			
+
 		}
 
 	}
 
 	public static void main(String[] args) {
-		Flughafen flughafen = new Flughafen(3);
-		flughafen.run();
-	
+		Flughafen flughafen = new Flughafen(10);
+		flughafen.start();
 
 	}
 }
