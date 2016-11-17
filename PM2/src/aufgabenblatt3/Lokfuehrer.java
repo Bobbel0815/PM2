@@ -1,18 +1,10 @@
 package aufgabenblatt3;
 
-/**
- * Diese Klasse beschreibt einen Lokfuehrer Thread, der einen Zug Ein- oder
- * Ausfahren kann.
- * 
- * @author acc378
- *
- */
 public class Lokfuehrer extends Thread {
-
-	public static enum Aufgabe {
-		EINFAHREN, AUSFAHREN
+	
+	static public enum Aufgabe{
+		EINFAHREN,AUSFAHREN;
 	}
-
 	/**
 	 * Aufgabe die der Lokfuehrer ausfuehren soll. Entweder einfahren oder
 	 * ausfahren.
@@ -29,8 +21,8 @@ public class Lokfuehrer extends Thread {
 	}
 
 	/**
-	 * Die Hauptmethode des threads. Wenn eine 0 mitgegeben wird, f�hrt ein
-	 * Zug ein, bei 1 aus
+	 * Die Hauptmethode des threads. Wenn eine 0 mitgegeben wird, f�hrt ein Zug
+	 * ein, bei 1 aus
 	 */
 	public void run() {
 		switch (aufgabe) {

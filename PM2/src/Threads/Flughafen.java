@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.Random;
 
 import Threads.Flugzeug.Status;
+
 /**
  * Diese Klasse repraesentiert einen Flughafen mit einer Landebahn.
  * @author acc378
  *
  */
+
 public class Flughafen extends Thread {
 	/**
 	 * Zeitschritt der pro run() Auruf, erhoet wird.
@@ -47,7 +49,7 @@ public class Flughafen extends Thread {
 				Flugzeug flugzeug = flugzeuge.get(i);
 				
 						flugzeug.setFlugdauer();
-					
+
 
 					System.out.println(flugzeuge.get(i).toString());
 				}
@@ -60,9 +62,8 @@ public class Flughafen extends Thread {
 			
 			zeit++;
 		}
-}
 
-	
+	}
 
 	/**
 	 * Synchornisierte Methode, die alle 1500ms ein FLugzeug mit der Flugdauer
@@ -126,7 +127,9 @@ public class Flughafen extends Thread {
 			}
 			kennung = random.nextInt(8999) + 1000;
 
+
 			flugdauer = random.nextInt(100) + 1;
+
 			id += " " + kennung;
 			Flugzeug flugzeug = new Flugzeug(id, flugdauer, this, zeit);
 			flugzeug.start();

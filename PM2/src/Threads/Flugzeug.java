@@ -1,10 +1,13 @@
 package Threads;
 
+
 /**
  * Repraesentiert ein FLugzeug Objekt, als Thread verwirklicht.
  * @author acc378
  *
  */
+
+
 public class Flugzeug extends Thread{
 	/**
 	 * ID des Flugzeuges
@@ -59,6 +62,7 @@ public class Flugzeug extends Thread{
  * Wenn die Flugdauer = 0 ist , wird die Landen Methode aufgerufen.
  */
 	public void run() {
+
 			while(flugdauer>0){
 				try {
 	 				sleep(125);
@@ -67,7 +71,10 @@ public class Flugzeug extends Thread{
 	 			}
 	 		}
 	 		flughafen.landen(this);
+
+	 		
 	}
+	
 	public int getStartZeit() {
 		return startZeit;
 	}

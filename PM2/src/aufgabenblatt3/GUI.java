@@ -12,22 +12,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-/**
- * Diese Klasse repraensentiert die Benutzeroberflaeche des Bahnhofs.
- * 
- * @author acc378
- *
- */
 public class GUI extends Application implements Observer {
 
 	/**
 	 * Anzahl von Gleisen des Rangierbahnhofs.
 	 */
-	private final int anzahlGleise = 5;
+	private int anzahlGleise = 10;
 
-	private Simulation simulation;
-	private final int WIDTH = 120;
-	private final int HEIGHT = 480;
+	private Rangierbahnhof bahnhof;
 	/**
 	 * Pane der Benutzeroberflaeche
 	 */
@@ -40,25 +32,28 @@ public class GUI extends Application implements Observer {
 	/**
 	 * Hauptmethode der Benutzeroberflaeche. Erzeugt ein Fenster mit Rechtecken,
 	 * die Rot sind falls ein Gleis belegt, und Gruen wenn eins Frei ist.
+	 * 
+	 * 
 	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		int rectangleHeight = HEIGHT / anzahlGleise;
+		int rectangleHeight = 480 / anzahlGleise;
 		Rectangle rectangle;
 		root = new VBox();
 		for (int i = 0; i < anzahlGleise; i++) {
-			rectangle = new Rectangle(0, i * rectangleHeight + i, WIDTH, rectangleHeight);
+			rectangle = new Rectangle(0, i * rectangleHeight + i, 120, rectangleHeight);
 			rectangle.setFill(Color.GREEN);
 			rectangle.setStroke(Color.BLACK);
 			root.getChildren().add(rectangle);
 		}
 		primaryStage.setTitle("Simulation");
-		primaryStage.setScene(new Scene(root, WIDTH, HEIGHT));
+		primaryStage.setScene(new Scene(root, 120, 480));
 		primaryStage.show();
 
-		simulation = new Simulation(this, anzahlGleise);
-		Thread simulationT = new Thread(simulation);
-		simulationT.start();
+		bahnhof = new Rangierbahnhof(anzahlGleise);
+		bahnhof.addObserver(this);
+		Thread simulation = new Thread(new Simulation(this,anzahlGleise));
+		simulation.start();
 
 	}
 
