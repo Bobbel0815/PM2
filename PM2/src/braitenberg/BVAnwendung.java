@@ -46,7 +46,7 @@ public class BVAnwendung extends Application {
 
 		// Canvas setzen
 		BVCanvas canvas = new BVCanvas(600, 600, sim);
-
+		//Setzt das Signal innerhalb der Canvas mit einem Mausklick auf die Mausposition
 		canvas.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
