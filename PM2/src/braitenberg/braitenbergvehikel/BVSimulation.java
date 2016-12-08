@@ -43,7 +43,7 @@ public class BVSimulation extends Observable{
       // Bewege vehikel
       vehikel.bewege();
     }
-    // setzte Änderung und den Beobachter melden
+    // setze Änderung und den Beobachter melden
     setChanged();
     notifyObservers(this);
   }
@@ -85,7 +85,7 @@ public class BVSimulation extends Observable{
   public void setSignal(double x, double y) {
     signal = new Vektor2(x, y);
           
-    // setzte Änderung und den Beobachter melden
+    // setze Änderung und den Beobachter melden
     setChanged();
     notifyObservers();
   }
