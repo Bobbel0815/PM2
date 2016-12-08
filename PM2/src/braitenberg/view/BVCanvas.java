@@ -28,6 +28,8 @@ public class BVCanvas extends Canvas implements Observer {
    */
   private Image bvImage =
       new Image("braitenberg/assets/braitenberg_vehikel.png");
+ 
+  //Bilder der Bewegungsmuster
   private Image bvAtt = new Image("braitenberg/assets/icon_attraktion.png");
   private Image bvAbs = new Image("braitenberg/assets/icon_abstossung.png");
 
