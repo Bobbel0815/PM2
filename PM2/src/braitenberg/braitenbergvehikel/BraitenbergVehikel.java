@@ -207,6 +207,8 @@ public class BraitenbergVehikel extends Observable{
 
   public void setBewegung(BVBewegung bewegung) {
     this.bewegung = bewegung;
+    
+    // setze Änderung und den Beobachter melden
     setChanged();
     notifyObservers();
   }
