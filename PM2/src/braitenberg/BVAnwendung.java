@@ -62,21 +62,20 @@ public class BVAnwendung extends Application {
 		BorderPane wurzel = new BorderPane();
 		VBox vbox = new VBox();
 		wurzel.setCenter(canvas);
-
+ 		//Positionieren der vbox
 		vbox.setPadding(new Insets(25, 50, 25, 0));
 		vbox.setSpacing(15);
 		wurzel.setRight(vbox);
-
+		//Button erstellen
 		Button simulationButton = new Button("Simuliere!");
 		simulationButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				sim.simulationsSchritt();
 			}
-
 		});
 		vbox.getChildren().add(simulationButton);
-
+		//Checkbox erstellen
 		CheckBox simulationCheckBox = new CheckBox("Simulation");
 		simulationCheckBox.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -90,20 +89,22 @@ public class BVAnwendung extends Application {
 					simulationsThread = null;
 				}
 			}
-
 		});
 		vbox.getChildren().add(simulationCheckBox);
-
+		
+		//Hbox und Combobox erstellen für "Susi"
+		
 		HBox hbox = new HBox();
+		//Label erstellen und positionieren
 		Label label = new Label("Susi");
 		label.setPadding(new Insets(5, 5, 5, 0));
 		hbox.setSpacing(5);
-
+		//Combobox mit "Attraktion" und "Abstossung" erstellen 
 		ComboBox<String> comboBox1 = new ComboBox<String>();
 		comboBox1.getItems().addAll("ATTRAKTION", "ABSTOSSUNG");
 		comboBox1.getSelectionModel().select(0);
 		comboBox1.setOnAction(new EventHandler<ActionEvent>() {
-
+		//Bewegungsmuster mit Hilfe der Combobox den Fahrzeugen übergeben
 			@Override
 			public void handle(ActionEvent event) {
 				String bewegung = comboBox1.getSelectionModel().getSelectedItem();
@@ -115,21 +116,24 @@ public class BVAnwendung extends Application {
 			}
 
 		});
-
+		//Label und Combobox in die hbox legen
 		hbox.getChildren().add(label);
 		hbox.getChildren().add(comboBox1);
+		//Hbox in die vbox legen
 		vbox.getChildren().add(hbox);
-
+		
+		//Hbox und Combobox erstellen für "Mike"
+		
 		hbox = new HBox();
 		label = new Label("Mike");
 		label.setPadding(new Insets(5, 5, 5, 0));
 		hbox.setSpacing(5);
-
+		//Combobox mit "Attraktion" und "Abstossung" erstellen 
 		ComboBox<String> comboBox2 = new ComboBox<String>();
 		comboBox2.getItems().addAll("ATTRAKTION", "ABSTOSSUNG");
 		comboBox2.getSelectionModel().select(1);
 		comboBox2.setOnAction(new EventHandler<ActionEvent>() {
-
+		//Bewegungsmuster mit Hilfe der Combobox den Fahrzeugen übergeben
 			@Override
 			public void handle(ActionEvent event) {
 				String bewegung = comboBox2.getSelectionModel().getSelectedItem();
@@ -141,14 +145,15 @@ public class BVAnwendung extends Application {
 			}
 
 		});
-
+		//Label und Combobox in die hbox legen
 		hbox.getChildren().add(label);
 		hbox.getChildren().add(comboBox2);
+		//Hbox in die vbox legen
 		vbox.getChildren().add(hbox);
 
 		primaryStage.setScene(new Scene(wurzel, 850, 600));
 		primaryStage.show();
-
+		//Eventhandler zum Beenden der Threads beim schließen des Fensters
 		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 
 			@Override
