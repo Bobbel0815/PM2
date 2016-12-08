@@ -87,6 +87,8 @@ public class BraitenbergVehikel extends Observable{
     double motorBewegungRechts =
         umdrehungenRechts * Math.PI * getRadRadius() * 2.0;
     bewege(motorBewegungLinks, motorBewegungRechts);
+    
+    // setze Änderung
     setChanged();
   }
 
